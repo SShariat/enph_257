@@ -1,0 +1,55 @@
+void setup()
+{
+	Serial.begin(9600);
+}
+
+void loop()
+{
+	Serial.println(i);
+	i++;
+}
+
+
+// The following code is from TINAH and in no circumstances should be included in the Arduino program.
+// I am far too lazy to just go through and comment it out; it is simply for reference.
+
+#include <phys253.h>
+#include <LiquidCrystal.h>
+#include <Servo253.h>
+
+
+
+
+void setup() 
+{
+  portMode(0, INPUT);
+  
+  LCD.clear();
+  LCD.home();
+  LCD.setCursor(0,0); LCD.print("Hello World!");
+  LCD.setCursor(0,1); LCD.print("Press Start");
+  while ( !(startbutton()) ) ;
+}
+
+
+void loop() 
+{
+  int x = LOW;
+  x = digitalRead(0);
+  
+  LCD.clear(); LCD.home(); LCD.setCursor(0,0);
+        
+  if (x == HIGH) {
+    LCD.print("No reflection ");
+    LCD.setCursor(0,1); LCD.print("detected");
+  }    
+  else if (x== LOW) {
+    LCD.print("Reflection ");
+    LCD.setCursor(0,1); LCD.print("detected!");
+  }
+  else {
+    LCD.print("WTF did you do?");
+  }
+  
+  delay(100);
+}
