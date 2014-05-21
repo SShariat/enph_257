@@ -1,4 +1,4 @@
-arduino = serial('COM10','BaudRate',4800);
+arduino = serial('COM10','BaudRate',9600);
 % this refers to the port where Arduino is connected, and how fast the data
 % is transferred.
 
