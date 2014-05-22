@@ -5,8 +5,6 @@ arduino = serial('COM10','BaudRate',9600);
 fopen(arduino);
 % This opens the Arduino board, as if it was a file on our computer.
 
-% The following will plot the data received (in this case a series of
-% linearly increasing integers) on a graph.
 
 x = linspace(1, 100);
 
