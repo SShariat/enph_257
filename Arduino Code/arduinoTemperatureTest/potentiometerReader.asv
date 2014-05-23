@@ -1,0 +1,29 @@
+global arduino t
+delete(instrfindall);
+clear all;
+n=0;
+i=1;
+cycles = 30;
+arduino = serial('COM10','BaudRate',9600);
+% this refers to the port where Arduino is connected, and how fast the data
+% is transferred.
+
+fopen(arduino);
+% This opens the Arduino board, as if it was a file on our computer.
+while (n <cycles)
+    state = fscanf(arduino, '%f')*5/1023;
+    t(i) = state;
+    i = i + 1;
+    set(gcf, 'color', 'white');
+    drawnow;
+    plot(t,'-.dk','linewidth',1.8), axis([1 cycles 0 5]);
+    grid on
+    title('Graph');
+    xlabel('Time(seconds)');
+    ylabel('Temperature(Celsius)');
+    n= n+1;
+    pause(0.5);
+end
+
+% now we close the connection to Arduino
+fclose(arduino);
