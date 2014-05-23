@@ -5,16 +5,15 @@ arduino = serial('COM10','BaudRate',9600);
 fopen(arduino);
 % This opens the Arduino board, as if it was a file on our computer.
 
+x = linspace(0,1,226);
+y = zeros(226,1);
 
-x = linspace(1, 100);
-
-% We are scanning Arduino using the fscanf function.
-for i = 1:length(x)
+for i = 1:length(x);
     y(i) = fscanf(arduino, '%d');
 end
 
 % now we close the connection to Arduino
-fclose(arduino);
+fclose(newobjs);
 
 % next, we plot our points.
 disp('creating plot...');
