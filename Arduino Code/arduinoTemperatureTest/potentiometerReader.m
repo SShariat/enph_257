@@ -1,3 +1,5 @@
+delete(instrfindall);
+clear all;
 arduino = serial('COM10','BaudRate',9600);
 % this refers to the port where Arduino is connected, and how fast the data
 % is transferred.
@@ -9,11 +11,11 @@ x = linspace(0,1,226);
 y = zeros(226,1);
 
 for i = 1:length(x);
-    y(i) = fscanf(arduino, '%d');
+    y(i) = fscanf(arduino, '%f');
 end
 
 % now we close the connection to Arduino
-fclose(newobjs);
+fclose(arduino);
 
 % next, we plot our points.
 disp('creating plot...');
