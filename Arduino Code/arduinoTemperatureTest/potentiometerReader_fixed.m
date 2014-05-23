@@ -1,19 +1,19 @@
-arduino = serial('COM10','BaudRate',9600);
+a = serial('COM10');
 % this refers to the port where Arduino is connected, and how fast the data
 % is transferred.
 
-fopen(arduino);
+fopen(a);
 % This opens the Arduino board, as if it was a file on our computer.
 
 x = linspace(0,1,226);
-y = zeros(226,1);
+y = zeros(1, length(x));
 
 for i = 1:length(x);
-    y(i) = fscanf(arduino, '%d');
+    y(i) = fscanf(a, '%d');
 end
 
 % now we close the connection to Arduino
-fclose(newobjs);
+fclose(a);
 
 % next, we plot our points.
 disp('creating plot...');
