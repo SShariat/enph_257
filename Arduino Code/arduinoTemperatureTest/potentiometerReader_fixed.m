@@ -10,14 +10,15 @@ fopen(a);
 %x = linspace(0,1,226);
 %y = zeros(1, length(x));
 
+interv =1000;
 time_delta = 200;
 time = 0;
+
 while(1)
-hold on
-    plot(time, fscanf(a,'%f'));
+    y = fscanf(a,'%f');
+    scatter(time, y);
     time = time + time_delta;
-    delay(time_delta)
-hold off;
+    drawnow;
 end
 
 % now we close the connection to Arduino
