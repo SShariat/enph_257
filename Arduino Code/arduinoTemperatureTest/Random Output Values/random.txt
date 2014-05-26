@@ -1,5 +1,3 @@
-float rand = 0.0;
-
 void setup()
 {
 	Serial.begin(9600);
@@ -7,6 +5,7 @@ void setup()
 
 void loop() 
 {
+        float rand = 1.72;
 	rand = random(10);
 	
 	Serial.println(rand);
