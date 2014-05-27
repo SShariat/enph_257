@@ -1,8 +1,11 @@
-%% Temperature Test Mark II : Reading in from multiple input sources.
+%% Temperature Test Mark III : Real-Time Graph
 
-%  Like last time, we are going to use a potentiometer to simulate the
-%  input from a solid-state thermometer. The difference from the previous
-%  iteration is, however, that we are going to be using three of them!
+%  Last time, we managed to graph three seperate potentiometer inputs.
+%  However, it outputs the graph at the very end, so that we don't know
+%  what's going on until we finish recording the data. This is not ideal,
+%  as when we're recording the temperature data overnight, we don't want to
+%  come in one morning and see that since a wire was disconnected, we
+%  simply recorded a straight line of zero temperature.
 
 % Our setup, deleting all that came before.
 clc;
@@ -17,12 +20,29 @@ dT = 1;
 % Value, in seconds, we want to run the program for.
 period = 10;
 
-
 % Activates our control over the Arduino board. Dance, puppet, dance!
 a = arduino('COM10');
+
 T = [(a.analogRead(1)) * 5.0 / 1023.0; (a.analogRead(2)) * 5.0 / 1023.0; (a.analogRead(3)) * 5.0 / 1023.0;];
 % A side effect of our concencation; we must define the initial value of T
 % at t=0. This big nasty equation is what we do to get the initial values.
+
+% This initializes our x-axis variable, the time.
+time = 0;
+
+% Here, we initialize our graph. Despite just showing the initial value of
+% T, we will grow this as time goes on.
+hold on
+drawnow;
+plot(time, T(1,:)), axis auto;
+plot(time, T(2,:)), axis auto;
+plot(time, T(3,:)), axis auto;
+grid on;
+xlabel('Time (s)');
+ylabel('Value');
+
+display('Drawing Graph...')
+
 for i = 1:period
     % This will read in a value (between 0 and 1023, this is an analog
     % input), from the first potentiometer.
@@ -47,19 +67,24 @@ for i = 1:period
     % reliability and readability.
     T = [T newT];
     
-    % We pause for our previously-agreed-upon delta-t value.
+    % Under construction...    
+    
+    time = time+1;
+    plot(time, T(1,:)), axis auto;
+    drawnow;
+    plot(time, T(2,:)), axis auto;
+    drawnow;
+    plot(time, T(3,:)), axis auto;
+    drawnow;
+    
+    
+    % Finally, we pause for our previously-agreed-upon delta-t value.
     pause(dT);
 end
 
 delete(a);
 % Closes our port connection; the Invisible Hand has withdrawn.
 
-x = 0:dT:period;
-
-hold on
-plot(x, T(1,:), 'r');
-plot(x, T(2,:), 'g');
-plot(x, T(3,:), 'b');
-xlabel('Time (s)');
-ylabel('Value');
 hold off
+
+display('Plotting complete!');
