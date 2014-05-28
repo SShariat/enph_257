@@ -14,16 +14,29 @@ delete(instrfindall);
 newT = zeros(); 
 dT = 1;
 
+% For future reference, add a keyevent so that it will just run and stop on
+% queue
 % Value, in seconds, we want to run the program for.
-period = 10;
+second = 1;
+minute = 60;
+hour = minute*60;
 
+period = 2*minute;
 
 % Activates our control over the Arduino board. Dance, puppet, dance!
 a = arduino('COM10');
 T = [(a.analogRead(1)) * 5.0 / 1023.0; (a.analogRead(2)) * 5.0 / 1023.0; (a.analogRead(3)) * 5.0 / 1023.0;];
 % A side effect of our concencation; we must define the initial value of T
 % at t=0. This big nasty equation is what we do to get the initial values.
+%disp(Press Start);
+
+disp('Begun Recording');
+
+%Added a Wait Bar to the System
+h = waitbar(0, 'Recording Data DO NOT CANCEL...');
+
 for i = 1:period
+      
     % This will read in a value (between 0 and 1023, this is an analog
     % input), from the first potentiometer.
     sensorValueA = a.analogRead(1);
@@ -46,20 +59,30 @@ for i = 1:period
     % shouldn't be a problem. This program is not built for speed, but for
     % reliability and readability.
     T = [T newT];
-    
+    x = 0:dT:i;
+    %plot data
+    plot(x, T(1:3,:));
+   
+    waitbar(i/period);
     % We pause for our previously-agreed-upon delta-t value.
     pause(dT);
+   
 end
+close(h)
+
+disp('Finished Recording');
+%Graphing Parameters
+xlabel('Time (s)');
+ylabel('Value');
+legend('Sensor 1','Sensor 2','Sensor 3');
+grid on;
+
 
 delete(a);
 % Closes our port connection; the Invisible Hand has withdrawn.
 
-x = 0:dT:period;
+disp('Saving Variables to File');
+save('variables.mat', 'T', 'x');
 
-hold on
-plot(x, T(1,:), 'r');
-plot(x, T(2,:), 'g');
-plot(x, T(3,:), 'b');
-xlabel('Time (s)');
-ylabel('Value');
-hold off
+%NOTE: If a sensor is not conncected to anything it will float and base its
+%value based on the other sensor values.
