@@ -1,4 +1,4 @@
-%% Temperature Test Mark iII : Real-Time Graph
+%% Temperature Test Mark III : Real-Time Graph
 
 %  Like last time, we are going to use a potentiometer to simulate the
 %  input from a solid-state thermometer. The difference from the previous
@@ -28,6 +28,7 @@ period = 1.5*hour;
 to_voltage = (5.0 / 1023.0);
 gain = 85.0;
 carley_couple = 24.7*1000.0;
+offset = 0.7;
 
 % Activates our control over the Arduino board. Dance, puppet, dance!
 %a = arduino('COM10');
@@ -47,12 +48,12 @@ for i = 1:period
 
     % This will read in a value (between 0 and 1023, this is an analog
     % input), from the first potentiometer. (Measured in Volts)
-    sensorValue0 = a.analogRead(0)* to_voltage;
-    sensorValue1 = a.analogRead(1)* to_voltage;
-    sensorValue2 = a.analogRead(2)* to_voltage;
-    sensorValue3 = a.analogRead(3)* to_voltage;
-    sensorValue4 = a.analogRead(4)* to_voltage;
-    sensorValue5 = a.analogRead(5)* to_voltage;
+    sensorValue0 = (cast(a.analogRead(0),'double')* to_voltage);
+    sensorValue1 = (cast(a.analogRead(1),'double')* to_voltage) - offset;
+    sensorValue2 = (a.analogRead(2)* to_voltage) - offset;
+    sensorValue3 = (a.analogRead(3)* to_voltage) - offset;
+    sensorValue4 = (a.analogRead(4)* to_voltage) - offset;
+    sensorValue5 = (a.analogRead(5)* to_voltage);
     
     %Variable Matrix is then update accordingly
     
