@@ -1,7 +1,8 @@
-%% Temperature Test Mark IV : Clean(er) Code
+%% Temperature Test Mark V : Computer-Controlled Circuit
+% (heh, alliteration)
 
-%  This iteration of our temperature test code is an improvement over Mark
-%  III; it cleans up the code, and even manages to optimize speed! (Gasp)
+%  Now that the code plots very nicely, it is time to control it remotely!
+%  Our plan is to have a MOSFET controlled by Arduino.
 
 % Commented out for posterity, it is available in arduinoConnect
 clc;
