@@ -2,7 +2,8 @@
 % (heh, alliteration)
 
 %  Now that the code plots very nicely, it is time to control it remotely!
-%  Our plan is to have a MOSFET controlled by Arduino.
+%  Our plan is to have a MOSFET controlled by Arduino, which is in turn
+%  controlled by MATLAB
 
 % Commented out for posterity, it is available in arduinoConnect
 clc;

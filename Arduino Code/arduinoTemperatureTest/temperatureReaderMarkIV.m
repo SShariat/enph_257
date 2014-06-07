@@ -3,7 +3,6 @@
 %  This iteration of our temperature test code is an improvement over Mark
 %  III; it cleans up the code, and even manages to optimize speed! (Gasp)
 
-% Commented out for posterity, it is available in arduinoConnect
 clc;
 
 % This measures the time interval between points, in seconds. 
@@ -18,11 +17,11 @@ hour = minute*60;
 % Value, in seconds, we want to run the program for. Thanks to the above
 % constants, we can simply enter in the time period in the time units we
 % prefer.
-period = 5*hour;
+period = 20*minute;
 
 % Our lovely constants
 to_voltage = (5.0 / 1023.0); % Changes analog values to their equivalent voltages.
-gain = 85.0;                 % Gain of the op-amp.
+gain = 805.0;                % Gain of the op-amp. This has been changed from previous versions of the circuit.
 carley_couple = 24.7*1000.0; % Carley's Thermocouple Constant, converts temperature values.
 offset = 0.972;              % The voltage offset we introduced in the circuit.
 
@@ -61,7 +60,11 @@ for i = 1:period
     end
     % Finally, we introduce the last TMP, the one measuring the power
     % resistor's temperature.
-    T(6,i) = (sensorValue(6)*100.0);    
+    T(6,i) = (sensorValue(6)*100.0);
+    
+    % Thermocouple 3 is really odd, it consistently plots data at 5 degrees
+    % below what it actually reads. Hence, we're correcting it here.
+    T(4,i) = T(4,i) + 3.5;
 
     % This sets up our x-axis, and plots the data.
     x = 1:dT:i;    
@@ -74,7 +77,7 @@ for i = 1:period
     xlabel('Time (s)');
     ylabel('Temperature (Celsius)');
     title('Temperature of Aluminum Bar');
-    legend('Ambient Temperature','Thermocouple 1', 'Thermocouple 2', 'Thermocouple 3', 'Thermocouple 4', 'Heater');
+    legend('Ambient Temperature','Thermocouple 1', 'Thermocouple 2', 'Thermocouple 3', 'Thermocouple 4', 'Heater','NorthWest');
     grid on;
 
     % We pause for our delta-t value, and update the progress bar.
