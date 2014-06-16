@@ -20,7 +20,10 @@ hour = minute*60;
 % Value, in seconds, we want to run the program for. Thanks to the above
 % constants, we can simply enter in the time period in the time units we
 % prefer.
-period = 5*hour;
+% period = 5*hour;
+
+% I'm reverting to the old version where we concencate the values. This
+% means we won't have wasted space.
 
 % Constants related to measuring temperature.
 to_voltage = (5.0 / 1023.0); % Changes analog values to their equivalent voltages.
@@ -30,7 +33,7 @@ offset = 0.972;              % The voltage offset we introduced in the circuit.
 % epsilon = 0.5;               % Named after the calculus value, this compensates for noise.
 
 % Initializes our T matrix, based on the period.
-T = zeros(6,(dT*period));
+T = zeros(6,1);
 
 disp('Begun Recording');
 arduinoOn;
