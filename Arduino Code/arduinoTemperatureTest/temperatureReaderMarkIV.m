@@ -21,7 +21,7 @@ period = 3*hour;
 
 % Our lovely constants
 to_voltage = (5.0 / 1023.0); % Changes analog values to their equivalent voltages.
-gain = 247.0;                % Gain of the op-amp. This has been changed from previous versions of the circuit.
+gain = 805.0;                % Gain of the op-amp. This has been changed from previous versions of the circuit.
 carley_couple = 24.7*1000.0; % Carley's Thermocouple Constant, converts temperature values.
 offset = 0.972;              % The voltage offset we introduced in the circuit.
 
@@ -66,7 +66,7 @@ for i = 1:period
     % Thermocouple 3 is really odd, it consistently plots data at 5 degrees
     % below what it actually reads. Hence, we're correcting it here.
     T(2,i) = T(2,i) - 1.5; % Thermocouple 1
-%     T(4,i) = T(4,i) + 3.5; % Thermocouple 3
+    T(4,i) = T(4,i) - 2.0; % Thermocouple 3
     T(5,i) = T(5,i) + 1.5; % Thermocouple 4
 
     % This sets up our x-axis, and plots the data.
