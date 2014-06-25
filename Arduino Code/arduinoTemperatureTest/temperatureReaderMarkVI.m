@@ -34,8 +34,11 @@ disp('Begun Recording');
 % I took the Wait Bar out, it was annoying during tests. It can be returned
 % at a later date.
 % h = waitbar(0, 'Recording Data...');
-h = figure;
-for i = 1:period
+global KEY_IS_PRESSED
+KEY_IS_PRESSED = 0;
+gcf
+set(gcf, 'KeyPressFcn', @myKeyPressFcn)
+while ~KEY_IS_PRESSED
     tic;
     % First, we initialize our sensorValue vector. This will store all our
     % data for this time step.

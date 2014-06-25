@@ -11,14 +11,14 @@ clc;
 % Measures the time interval between points, in seconds.
 dT = 1;
 n = 1; % The number of times the code has run for.
-m = 0; % A simple variable, if negative 1 then we exit our loop.
+m = 7; % A simple variable, if negative 1 then we exit our loop.
 
 % I'm reverting to the old version where we concencate the values. This
 % means we won't have wasted space.
 
 % Constants related to measuring temperature.
 to_voltage = (5.0 / 1023.0); % Changes analog values to their equivalent voltages.
-gain = 247.0;                % Gain of the op-amp.
+gain = 805.0;               % Gain of the op-amp.
 carley_couple = 24.7*1000.0; % Carley's Thermocouple Constant, converts temperature values.
 offset = 0.972;              % The voltage offset we introduced in the circuit.
 % epsilon = 0.5;               % Named after the calculus value, this compensates for noise.
@@ -26,10 +26,32 @@ offset = 0.972;              % The voltage offset we introduced in the circuit.
 % Initializes our T matrix, based on the period.
 T = zeros(6,1);
 
+result = input('Do you want to record heating (1) or cooling (2)?');
+
+ if result == 1
+    arduinoOn;
+    disp('Arduino Activated, and the program has begun recording. See you in several hours!');
+elseif result == 2
+    disp('You have a hot rod, eh? Very well, the program has begun recording.');
+else
+    disp('WTF man? That is not 1 or 2. Play nice, please.');
+    result = input('For reals. Heating (1), or Cooling (2)?');
+    if result == 1
+        arduinoOn;
+        disp('Arduino Activated, and the program has begun recording. See you in several hours!');
+    elseif result == 2
+        disp('Trying to record cooling data, eh? Very well, the program has begun recording.');
+    else
+        disp('Oh come on. You are not even trying. Tell you what, I am just going to restart. How do you like that, punk? Huh? Huh? Feels pretty bad, eh?');
+        return;
+    end
+end
+
+
 disp('Begun Recording');
 arduinoOn;
 
-for n = 1:10
+for n = 1:21600
     
     % Begins our timer code, it makes the graph *actually* real-time. (See
     % end of the loop for details)
@@ -45,7 +67,7 @@ for n = 1:10
     
     % Now, we can for loop it up for the thermocouples.
     for j = 1:4
-        sensorValue(j+1) = ((a.analogRead(j) * to_voltage) - offset)*carley_couple;
+        sensorValue(j+1) = ((a.analogRead(j) * to_voltage) - offset)*carley_couple/gain + sensorValue(1);
     end
     
     % This is the final TMP, it measures the power resistor.
@@ -54,9 +76,8 @@ for n = 1:10
     % The thermocouples can be erratic at times, they report temperatures
     % higher/lower than they're actually experiencing. As such,we must
     % correct them here.
-    sensorValue(2,n) = sensorValue(2,n) - 1.5;
-    sensorValue(5,n) = sensorValue(5,n) + 1.5;
-    
+%     sensorValue(2) = sensorValue(2) - 1.5;
+%     sensorValue(5) = sensorValue(5) + 1.5;    
     
     % Finally, we concencate the data from the sensors with the T matrix.
     T = [T sensorValue];
@@ -83,8 +104,7 @@ for n = 1:10
     title('Temperature of Aluminum Bar');
     legend('Ambient Temperature','Thermocouple 1', 'Thermocouple 2', 'Thermocouple 3', 'Thermocouple 4', 'Heater', 'Location', 'NorthWest');
     grid on;
-    
-    
+        
     % We stop the timer, and adjust our waiting time for the time elapsed. 
     timeElapsed = toc;
     pause(dT - timeElapsed);

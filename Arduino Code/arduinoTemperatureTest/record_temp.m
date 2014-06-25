@@ -1,4 +1,9 @@
-%% Temperature Test Mark IV : Clean(er) Code
+
+global KEY_IS_PRESSED
+KEY_IS_PRESSED = 0;
+
+%% Temperature Test Mark VI : Clean(er) Code
+% Implementing a **** stop button
 
 %  This iteration of our temperature test code is an improvement over Mark
 %  III; it cleans up the code, and even manages to optimize speed! (Gasp)
@@ -34,8 +39,13 @@ disp('Begun Recording');
 % I took the Wait Bar out, it was annoying during tests. It can be returned
 % at a later date.
 % h = waitbar(0, 'Recording Data...');
-h = figure;
-for i = 1:period
+
+figure;
+hold on 
+gcf;
+set(gcf, 'KeyPressFcn', @myKeyPressFcn);
+i = 1;
+while ~KEY_IS_PRESSED
     tic;
     % First, we initialize our sensorValue vector. This will store all our
     % data for this time step.
@@ -72,7 +82,8 @@ for i = 1:period
     % This sets up our x-axis, and plots the data.
     x = 1:dT:i;
     plot(x, T(1:6,1:i));
-
+    gcf;
+    set(gcf, 'KeyPressFcn', @myKeyPressFcn);
     % As a safety measure, we save the variables to file every iteration.
     save('variables_test.mat', 'T', 'x');
     
@@ -92,10 +103,11 @@ for i = 1:period
     % We then pause for our delta-t value, ready to implement this again on
     % the next step!
     timeElapsed = toc;
-        
+    
+    i = i +1;
     pause(dT - timeElapsed);
 end
-
 % The final bit of the progress bar, we don't need its kind in here!
 % close(h)
 disp('Finished Recording');
+
