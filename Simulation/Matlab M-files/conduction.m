@@ -13,7 +13,7 @@ unit_length = (30.5/elements)/100.0;
 unit_mass = density*unit_length*cross_area;
 surface_a_element = pi*diameter_rod*unit_length;
 d_time = 0.5;
-number_of_ticks=10800*2;
+number_of_ticks=10*2;
 P_in = 6.667;
 
 %Initialization of the Data-Recording Vectors
