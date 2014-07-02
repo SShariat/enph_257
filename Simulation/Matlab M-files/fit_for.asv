@@ -14,9 +14,9 @@ f = f_in;
 %Calculates the value of the new c,k,f for big epsilon
 count = 0;
 %Loop for Big values of Epsilon
-ec = 50;
-ek = 10;
-ef = 0.01;
+ec = 100;
+ek = 1;
+ef = 0.001;
 while true
     %For loop tests 6 points around point
         next_c=c;
@@ -47,12 +47,16 @@ while true
     end
     count = count + 1;
 end
+display(c);
+display(k);
+display(f);
 
-
-ec = 10;
+current_chi = calculate_chi(conduction(c,k,f),real_data);
+smallest_chi = current_chi;
+%Loop for Small values of Epsilon
+ec = 50;
 ek = 1;
 ef = 0.001;
-%Loop for Small values of Epsilon
 while true
     %For loop tests 6 points around point
         next_c=c;
