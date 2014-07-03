@@ -66,4 +66,3 @@ for count = 1:number_of_ticks
 end
 sim_data = [data_tc_1,data_tc_2,data_tc_3]';
 end
-
