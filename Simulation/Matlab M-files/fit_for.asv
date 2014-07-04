@@ -1,4 +1,4 @@
-function [c_f,k_f,f_f]=fit_for(c_in,k_in,f_in,y)
+function [c_f,k_f,f_f]=fit_for(c_in,k_in,f_in,y,rd_t4)
 
 %Extracts real data-matrix
 real_data = y;

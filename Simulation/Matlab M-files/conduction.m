@@ -4,12 +4,12 @@ function [sim_data]=conduction(specific_heat,kappa,factor,rd_t4)
 %Constansts for Test Rod
 elements = 40;
 elements_1=elements-1;
-t_amb = 24;
+t_amb = 25;
 rod = ones(1,elements)*t_amb;
 diameter_rod = (2.26/100.0);
 cross_area = pi*(diameter_rod/2)^2;
 unit_length = ((30.5-6.1)/elements)/100.0;
-unit_mass = 0.2612/elements;
+unit_mass = 0.3265;
 surface_a_element = pi*diameter_rod*unit_length;
 d_time = 0.5;
 number_of_ticks=10800*2;
@@ -64,9 +64,6 @@ for count = 1:number_of_ticks
     %Increment time
     time = time + d_time;
 end
-M = [data_tc_1,data_tc_2,data_tc_3]';
-sim_data = zeros(3,(number_of_ticks/2));
-for j=1:(number_of_ticks/2)
-    sim_data(:,j) = M(:,j*2-1);
+sim_data = [data_tc_1,data_tc_2,data_tc_3]';
 end
-end
+
