@@ -12,7 +12,7 @@ stephen = stephen_in;
 count = 0;
 %Loop for Big values of Epsilon
 ehc = 0.1;
-ee = 0.1;
+ee = 0.001;
 es = 1*10^-8;
 while true
     %For loop tests 6 points around point
@@ -55,7 +55,7 @@ smallest_chi = current_chi;
 count = 0;
 %Loop for Small values of Epsilon
 ehc = 0.001;
-ee = 0.01;
+ee = 0.001;
 es = 0.1*10^-8;
 while true
     %For loop tests 6 points around point
