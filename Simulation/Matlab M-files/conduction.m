@@ -2,17 +2,16 @@
 function [sim_data]=conduction(specific_heat,kappa,factor,rd_t4)
 
 %Constansts for Test Rod
-elements = 40;
+elements = 50;
 elements_1=elements-1;
-t_amb = 24;
+t_amb = 25;
 rod = ones(1,elements)*t_amb;
 diameter_rod = (2.26/100.0);
 cross_area = pi*(diameter_rod/2)^2;
 unit_length = ((30.5-6.1)/elements)/100.0;
 unit_mass = 0.2612/elements;
-surface_a_element = pi*diameter_rod*unit_length;
-d_time = 0.5;
-number_of_ticks=10800*2;
+d_time = 0.125;
+number_of_ticks=10800*8;
 P_in = 6.667;
 
 %Initialization of the Data-Recording Vectors
@@ -23,7 +22,7 @@ tc_4_index = 40;
 
 %Initialize Data Tables
 data_time = zeros(number_of_ticks,1);
-data_tc_1  = zeros(number_of_ticks,1);
+data_tc_1 = zeros(number_of_ticks,1);
 data_tc_2 = zeros(number_of_ticks,1);
 data_tc_3 = zeros(number_of_ticks,1);
 
@@ -40,7 +39,7 @@ for count = 1:number_of_ticks
         if index == 1
             Q_in = Q*d_time;
         else
-            Q_in = kappa*cross_area*(rod(1,index-1)-rod(1,index))*d_time/unit_length;
+            Q_in = ((kappa*cross_area*(rod(1,index-1)-rod(1,index)))/unit_length)*d_time;
         end
         
         Q_out = kappa*cross_area*(rod(1,index)-rod(1,index+1))*d_time/unit_length;
@@ -48,7 +47,7 @@ for count = 1:number_of_ticks
         %         Q_radiation = emiss*stephen*(rod(1,index)^4)*surface_a_element;
         
         Q_net = Q_in - Q_out;
-        rod(1,index) = Q_net/(unit_mass * specific_heat) + rod(1,index);
+        rod(1,index) = (Q_net/(unit_mass * specific_heat)) + rod(1,index);
         
         %Record Data at 6.1,12.2,18.3,24.4 cm intervals at appropriate
         %indexes
@@ -64,9 +63,7 @@ for count = 1:number_of_ticks
     %Increment time
     time = time + d_time;
 end
-M = [data_tc_1,data_tc_2,data_tc_3]';
-sim_data = zeros(3,(number_of_ticks/2));
-for j=1:(number_of_ticks/2)
-    sim_data(:,j) = M(:,j*2-1);
-end
+sim_data = [data_tc_1,data_tc_2,data_tc_3]';
+sim_data = sim_data(:,1:8:10800*8);
+
 end
